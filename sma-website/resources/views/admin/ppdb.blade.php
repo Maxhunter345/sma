@@ -138,5 +138,21 @@ function deleteStudent(id) {
     }
 }
 </script>
+
+<style>
+.btn-primary {
+    background-color: #1C2E4E;
+    border-color: #1C2E4E;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #162441;
+    border-color: #162441;
+    transform: translateY(-2px);
+}
+</style>
 @endpush
 @endsection

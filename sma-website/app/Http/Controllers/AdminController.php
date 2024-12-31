@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Prestasi;
 use App\Models\News;
 use App\Models\Ppdb;
+use App\Models\BorrowRequest;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
-use App\Imports\PpdbImport; 
+use App\Imports\PpdbImport;
 
 class AdminController extends Controller
 {    
@@ -111,9 +112,12 @@ public function importPpdb(Request $request)
 }
 
     public function elibrary()
-    {
-        return view('admin.elibrary');
-    }
+{
+    $borrowRequests = BorrowRequest::with(['student', 'book'])->get();
+    return view('admin.elibrary', compact('borrowRequests'));
+    return "E-Library route is working!";
+}
+
 
     public function prestasi()
 {

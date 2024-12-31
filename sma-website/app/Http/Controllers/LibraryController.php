@@ -11,7 +11,8 @@ class LibraryController extends Controller
     public function index()
     {
         $books = Library::orderBy('created_at', 'desc')->get();
-        return view('library.index', compact('books'));
+        return view('elibrary', compact('books'));
+        return "E-Library route is working!";
     }
 
     public function show($id)

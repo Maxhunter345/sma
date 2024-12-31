@@ -7,6 +7,8 @@ use App\Http\Controllers\ElearningController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PpdbController;
 use App\Http\Controllers\LibraryController;
+use App\Http\Middleware\AdminMiddleware;
+
 
 // Home Route
 Route::get('/', function () {
@@ -42,7 +44,7 @@ Route::prefix('e-learning')->middleware('auth')->group(function () {
 });
 
 // Admin Routes
-Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+Route::prefix('admin')->middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])
         ->name('admin.dashboard');
         
@@ -60,6 +62,10 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::post('/ppdb/store', [PpdbController::class, 'store'])->name('admin.ppdb.store');
     Route::post('/ppdb/import', [PpdbController::class, 'import'])->name('admin.ppdb.import');
     Route::delete('/ppdb/{ppdb}', [PpdbController::class, 'destroy'])->name('admin.ppdb.destroy');
+
+    Route::get('/e-library', [AdminController::class, 'elibrary'])->name('admin.elibrary');
+    Route::put('/elibrary/approve/{id}', [AdminController::class, 'approveRequest'])->name('admin.elibrary.approve');
+    Route::delete('/elibrary/decline/{id}', [AdminController::class, 'declineRequest'])->name('admin.elibrary.decline');
 });
 
 // Public Routes
@@ -71,4 +77,9 @@ Route::get('/prestasi', function () {
 Route::get('/e-news', function () {
     $news = \App\Models\News::orderBy('created_at', 'desc')->get();
     return view('enews', compact('news'));
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/e-library', [LibraryController::class, 'index'])->name('library.elibrary');
+    Route::post('/e-library/request/{bookId}', [LibraryController::class, 'requestBook'])->name('library.elibrary.request');
 });
