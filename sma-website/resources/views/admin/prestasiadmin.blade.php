@@ -1,79 +1,79 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('styles')
 <style>
 .admin-prestasi-card {
-   transition: transform 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .admin-prestasi-card:hover {
-   transform: translateY(-5px);
+    transform: translateY(-5px);
 }
 
 .prestasi-thumbnail {
-   width: 100px;
-   height: 100px;
-   object-fit: cover;
-   border-radius: 8px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
 }
 </style>
 @endsection
 
 @section('content')
 <div class="container py-5">
-   <div class="d-flex justify-content-between align-items-center mb-4">
-       <h2>Kelola Prestasi</h2>
-       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPrestasiModal">
-           <i class="fas fa-plus me-2"></i>Tambah Prestasi
-       </button>
-   </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Kelola Prestasi</h2>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPrestasiModal">
+            <i class="fas fa-plus me-2"></i>Tambah Prestasi
+        </button>
+    </div>
 
-   @if(session('success'))
-   <div class="alert alert-success alert-dismissible fade show" role="alert">
-       {{ session('success') }}
-       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-   </div>
-   @endif
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
 
-   <div class="card">
-       <div class="card-body">
-           <div class="table-responsive">
-               <table class="table table-hover">
-                   <thead>
-                       <tr>
-                           <th>Thumbnail</th>
-                           <th>Judul</th>
-                           <th>Tanggal</th>
-                           <th>Aksi</th>
-                       </tr>
-                   </thead>
-                   <tbody>
-                       @foreach($prestasis as $prestasi)
-                       <tr>
-                           <td>
-                               <img src="{{ asset('storage/' . $prestasi->image) }}" class="prestasi-thumbnail" alt="{{ $prestasi->title }}">
-                           </td>
-                           <td>{{ $prestasi->title }}</td>
-                           <td>{{ $prestasi->created_at->format('d F Y') }}</td>
-                           <td>
-                               <button class="btn btn-sm btn-info me-2" data-bs-toggle="modal" data-bs-target="#editPrestasiModal{{ $prestasi->id }}">
-                                   <i class="fas fa-edit"></i>
-                               </button>
-                               <form action="{{ route('admin.prestasi.destroy', $prestasi->id) }}" method="POST" class="d-inline">
-                                   @csrf
-                                   @method('DELETE')
-                                   <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus prestasi ini?')">
-                                       <i class="fas fa-trash"></i>
-                                   </button>
-                               </form>
-                           </td>
-                       </tr>
-                       @endforeach
-                   </tbody>
-               </table>
-           </div>
-       </div>
-   </div>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Thumbnail</th>
+                        <th>Judul</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($prestasis as $prestasi)
+                    <tr>
+                        <td>
+                            <img src="{{ asset('storage/' . $prestasi->image) }}" class="prestasi-thumbnail" alt="{{ $prestasi->title }}">
+                        </td>
+                        <td>{{ $prestasi->title }}</td>
+                        <td>{{ $prestasi->created_at->format('d F Y') }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info me-2" data-bs-toggle="modal" data-bs-target="#editPrestasiModal{{ $prestasi->id }}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <form action="{{ route('admin.prestasi.destroy', $prestasi->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus prestasi ini?')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 </div>
 
 <!-- Modal Create -->

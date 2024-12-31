@@ -14,11 +14,11 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="dashboard">
-            <img src="{{ asset('images/Logo SMA.png') }}" alt="School Logo" style="width: 45px; height: 45px; margin-left: 50px; margin-right: 10px;">
-            Admin SMAN 6 Tangerang
+        <a class="navbar-brand d-flex align-items-center" href="{{ route('admin.dashboard') }}">
+            <img src="{{ asset('images/Logo SMA.png') }}" alt="School Logo" style="width: 45px; height: 45px; margin-right: 10px;">
+            Admin SMA 6 Tangerang
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -76,6 +76,7 @@
 <style>
 .navbar {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: white;
 }
 
 .navbar-brand {
@@ -99,5 +100,31 @@
 .nav-link:hover {
     color: #1C2E4E;
     opacity: 0.8;
+}
+
+/* Mobile menu styles */
+.navbar-toggler {
+    border-color: #1C2E4E;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(108, 117, 125, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background-color: white;
+        padding: 1rem;
+        border-radius: 0.25rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .nav-link {
+        color: #1C2E4E !important;
+    }
+    
+    .nav-link:hover {
+        color: #1C2E4E !important;
+    }
 }
 </style>

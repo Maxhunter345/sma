@@ -17,15 +17,19 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Guru</a>
+                    @if(Auth::check() && Auth::user()->is_admin)
+                        <a class="nav-link" href="{{ route('admin.guru.index') }}">Guru</a>
+                    @else
+                        <a class="nav-link" href="{{ route('guru.page') }}">Guru</a>
+                    @endif
                 </li>
                 @guest
                 <li class="nav-item ms-3">
-        <a href="{{ route('login') }}" class="btn btn-primary">Sign In</a>
-    </li>
-    <li class="nav-item ms-2">
-        <a href="{{ route('register') }}" class="btn btn-outline-primary">Register</a>
-    </li>
+                    <a href="{{ route('login') }}" class="btn btn-primary">Sign In</a>
+                </li>
+                <li class="nav-item ms-2">
+                    <a href="{{ route('register') }}" class="btn btn-outline-primary">Register</a>
+                </li>
                 @else
                     <li class="nav-item dropdown ms-3">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">

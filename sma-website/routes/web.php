@@ -47,7 +47,12 @@ Route::prefix('e-learning')->middleware('auth')->group(function () {
 Route::prefix('admin')->middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])
         ->name('admin.dashboard');
-        
+
+    Route::get('/admin/guru', [AdminController::class, 'guruIndex'])->name('admin.guru.index');
+    Route::post('/admin/guru/store', [AdminController::class, 'storeGuru'])->name('admin.guru.store');
+    Route::put('/admin/guru/update/{id}', [AdminController::class, 'updateGuru'])->name('admin.guru.update');
+    Route::delete('/admin/guru/delete/{id}', [AdminController::class, 'deleteGuru'])->name('admin.guru.delete');
+
     Route::get('/e-news', [AdminController::class, 'enews'])->name('admin.enews');
     Route::post('/e-news', [AdminController::class, 'storeNews'])->name('admin.enews.store');
     Route::put('/e-news/{news}', [AdminController::class, 'newsUpdate'])->name('admin.enews.update');
@@ -69,6 +74,10 @@ Route::prefix('admin')->middleware(['auth', AdminMiddleware::class])->group(func
 });
 
 // Public Routes
+
+Route::get('/guru', [HomeController::class, 'guruPage'])->name('guru.page');
+Route::get('/guru/{teacher}', [HomeController::class, 'showTeacher'])->name('guru.show');
+
 Route::get('/prestasi', function () {
     $prestasis = \App\Models\Prestasi::orderBy('created_at', 'desc')->get();
     return view('prestasi', compact('prestasis'));

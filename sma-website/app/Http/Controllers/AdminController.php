@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Teacher;
 use App\Models\Prestasi;
 use App\Models\News;
 use App\Models\Ppdb;
@@ -174,6 +175,94 @@ public function prestasiDestroy(Prestasi $prestasi)
     Storage::disk('public')->delete($prestasi->image);
     $prestasi->delete();
     return redirect()->back()->with('success', 'Prestasi berhasil dihapus!');
+}
+
+// Menampilkan halaman guru di admin
+public function guruIndex(Request $request)
+{
+    $page = $request->query('page', 1); // Default ke halaman 1
+    $teachersPerPage = 8;
+
+    $teachers = Teacher::all()->groupBy('subject');
+    $paginatedTeachers = $teachers->slice(($page - 1) * $teachersPerPage, $teachersPerPage);
+
+    return view('admin.guru', [
+        'teachers' => $paginatedTeachers,
+        'currentPage' => $page,
+        'totalPages' => ceil($teachers->count() / $teachersPerPage),
+    ]);
+}
+
+public function storeGuru(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'subject' => 'required|string|max:255',
+        'email' => 'nullable|email|max:255',
+        'phone' => 'nullable|string|max:20',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+    ]);
+
+    $data = [
+        'name' => $validated['name'],
+        'subject' => $validated['subject'],
+        'email' => $validated['email'],
+        'phone' => $validated['phone']
+    ];
+
+    if ($request->hasFile('photo')) {
+        $data['photo'] = $request->file('photo')->store('teachers', 'public');
+    }
+
+    Teacher::create($data);
+
+    return redirect()->back()->with('success', 'Guru berhasil ditambahkan!');
+}
+
+public function updateGuru(Request $request, $id)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'subject' => 'required|string|max:255',
+        'email' => 'nullable|email|max:255',
+        'phone' => 'nullable|string|max:20',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+    ]);
+
+    $teacher = Teacher::findOrFail($id);
+    
+    $data = [
+        'name' => $validated['name'],
+        'subject' => $validated['subject'],
+        'email' => $validated['email'],
+        'phone' => $validated['phone']
+    ];
+
+    if ($request->hasFile('photo')) {
+        // Delete old photo if exists
+        if ($teacher->photo) {
+            Storage::disk('public')->delete($teacher->photo);
+        }
+        $data['photo'] = $request->file('photo')->store('teachers', 'public');
+    }
+
+    $teacher->update($data);
+
+    return redirect()->back()->with('success', 'Data guru berhasil diperbarui!');
+}
+
+public function deleteGuru($id)
+{
+    $teacher = Teacher::findOrFail($id);
+    
+    // Delete photo if exists
+    if ($teacher->photo) {
+        Storage::disk('public')->delete($teacher->photo);
+    }
+    
+    $teacher->delete();
+
+    return redirect()->back()->with('success', 'Guru berhasil dihapus!');
 }
 
 }
