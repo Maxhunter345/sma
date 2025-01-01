@@ -124,28 +124,28 @@ footer {
 </div>
 
 <div class="container py-5">
-    <div class="menu-grid">
-        <a href="/prestasi" class="menu-item">
-            <i class="fas fa-trophy menu-icon"></i>
-            <span class="menu-text">Prestasi</span>
-        </a>
-        <a href="/ppdb" class="menu-item">
-            <i class="fas fa-user-graduate menu-icon"></i>
-            <span class="menu-text">PPDB</span>
-        </a>
-        <a href="/e-learning" class="menu-item">
-            <i class="fas fa-laptop-code menu-icon"></i>
-            <span class="menu-text">E-Learning</span>
-        </a>
-        <a href="/e-news" class="menu-item">
-            <i class="fas fa-newspaper menu-icon"></i>
-            <span class="menu-text">E-News</span>
-        </a>
-        <a href="/e-library" class="menu-item">
-            <i class="fas fa-book-reader menu-icon"></i>
-            <span class="menu-text">E-Library</span>
-        </a>
-    </div>
+<div class="menu-grid">
+    <a href="/prestasi" class="menu-item">
+        <i class="fas fa-trophy menu-icon"></i>
+        <span class="menu-text">Prestasi</span>
+    </a>
+    <a href="/ppdb" class="menu-item">
+        <i class="fas fa-user-graduate menu-icon"></i>
+        <span class="menu-text">PPDB</span>
+    </a>
+    <a href="https://lms.sman6tangerang.sch.id/login/index.php" class="menu-item" target="_blank">
+        <i class="fas fa-laptop-code menu-icon"></i>
+        <span class="menu-text">E-Learning</span>
+    </a>
+    <a href="/e-news" class="menu-item">
+        <i class="fas fa-newspaper menu-icon"></i>
+        <span class="menu-text">E-News</span>
+    </a>
+    <a href="/e-library" class="menu-item">
+        <i class="fas fa-book-reader menu-icon"></i>
+        <span class="menu-text">E-Library</span>
+    </a>
+</div>
 </div>
 
 <div class="ekskul-section">

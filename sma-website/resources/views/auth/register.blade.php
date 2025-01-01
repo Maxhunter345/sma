@@ -5,9 +5,9 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-5">
-                <div class="card shadow">
+                <div class="mt-3 card shadow">
                     <div class="card-header text-center bg-primary text-white">
-                        <h4 class="mb-0">Register E-Learning</h4>
+                        <h4 class="my-3">Register</h4>
                     </div>
                     <div class="card-body p-4">
                         @if ($errors->any())
@@ -65,12 +65,12 @@
 }
 
 .btn-primary {
-    background-color: #007bff;
+    background-color: #1C2E4E;
     border: none;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #1C2E4E;
 }
 
 .card {
@@ -80,21 +80,16 @@
 
 .card-header {
     border-radius: 10px 10px 0 0 !important;
-    background-color: #007bff !important;
+    background-color: #1C2E4E !important;
 }
 
 .form-control:focus {
-    border-color: #007bff;
+    border-color: #1C2E4E;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-a {
-    color: #007bff;
-    text-decoration: none;
-}
-
 a:hover {
-    color: #0056b3;
+    color: #1C2E4E;
 }
 </style>
 @endsection

@@ -41,8 +41,12 @@
 }
 
 .btn-login:hover {
-    background: #162441;
+    background: #1C2E4E;
     color: white;
+}
+
+a:hover {
+    color: #1C2E4E;
 }
 </style>
 @endsection
@@ -54,7 +58,7 @@
             <div class="col-md-5">
                 <div class="login-card">
                     <div class="login-header">
-                        <h4 class="mb-0">Sign In E-Learning</h4>
+                        <h4 class="mb-0">Sign In</h4>
                     </div>
                     <div class="login-body">
                         @if ($errors->any())

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
+use App\Models\Prestasi;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,4 +26,10 @@ class HomeController extends Controller
 {
     return view('guru.show', compact('teacher'));
 }
+
+public function showPrestasi($prestasiId)
+    {
+        $prestasi = Prestasi::findOrFail($prestasiId);
+        return view('prestasi.show', compact('prestasi'));
+    }
 }

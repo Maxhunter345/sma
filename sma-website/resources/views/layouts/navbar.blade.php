@@ -49,3 +49,14 @@
         </div>
     </div>
 </nav>
+
+<style>
+li .btn-primary {
+    background-color: #1C2E4E;
+    border: none;
+}
+
+li .btn-primary:hover {
+    background-color: #1C2E4E;
+}
+</style>

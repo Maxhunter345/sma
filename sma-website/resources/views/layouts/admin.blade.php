@@ -74,6 +74,50 @@
 </body>
 </html>
 <style>
+    .hero-section {
+        background-image: url('{{ asset('images/guru.png') }}');
+        background-size: cover;
+        background-position: center;
+        height: 500px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-top: -10px;
+    }
+
+    .hero-overlay {
+        background: rgba(0,0,0,0.6);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        padding: 20px;
+    }
+
+    .hero-content h1, 
+    .hero-content h2 {
+        color: white;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+
+    .hero-content h2 {
+        font-size: 2rem;
+        font-weight: 600;
+    }
 .navbar {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     background-color: white;
