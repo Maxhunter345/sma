@@ -34,42 +34,67 @@ class AdminController extends Controller
 
 public function storeNews(Request $request)
 {
-    $validated = $request->validate([
+    $request->validate([
         'title' => 'required|string|max:255',
-        'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        'content' => 'required|string'
+        'image' => 'required|image',
+        'content' => 'required',
+        'writer_name' => 'required|string|max:255',
+        'published_date' => 'required|date',
     ]);
+
+    if ($request->hasFile('additional_images')) {
+        $additionalImages = [];
+        foreach ($request->file('additional_images') as $file) {
+            $path = $file->store('news', 'public');
+            $additionalImages[] = $path;
+        }
+        $news->additional_images = json_encode($additionalImages);
+    }    
 
     $imagePath = $request->file('image')->store('news', 'public');
 
     News::create([
-        'title' => $validated['title'],
+        'title' => $request->title,
         'image' => $imagePath,
-        'content' => $validated['content']
+        'content' => $request->content,
+        'writer_name' => $request->writer_name,
+        'published_date' => $request->published_date,
     ]);
 
-    return redirect()->back()->with('success', 'Berita berhasil ditambahkan!');
+    return redirect()->route('admin.enews')->with('success', 'Berita berhasil ditambahkan.');
 }
 
 public function newsUpdate(Request $request, News $news)
 {
-    $validated = $request->validate([
+    $request->validate([
         'title' => 'required|string|max:255',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        'content' => 'required|string'
+        'content' => 'required',
+        'writer_name' => 'required|string|max:255',
+        'published_date' => 'required|date',
     ]);
 
     if ($request->hasFile('image')) {
-        Storage::disk('public')->delete($news->image);
         $imagePath = $request->file('image')->store('news', 'public');
-        $news->image = $imagePath;
+        $news->update(['image' => $imagePath]);
     }
 
-    $news->title = $validated['title'];
-    $news->content = $validated['content'];
-    $news->save();
+    if ($request->hasFile('additional_images')) {
+        $additionalImages = json_decode($news->additional_images) ?? [];
+        foreach ($request->file('additional_images') as $file) {
+            $path = $file->store('news', 'public');
+            $additionalImages[] = $path;
+        }
+        $news->additional_images = json_encode($additionalImages);
+    }    
 
-    return redirect()->back()->with('success', 'Berita berhasil diperbarui!');
+    $news->update([
+        'title' => $request->title,
+        'content' => $request->content,
+        'writer_name' => $request->writer_name,
+        'published_date' => $request->published_date,
+    ]);
+
+    return redirect()->route('admin.enews')->with('success', 'Berita berhasil diperbarui.');
 }
 
 public function newsDestroy(News $news)
@@ -77,6 +102,19 @@ public function newsDestroy(News $news)
     Storage::disk('public')->delete($news->image);
     $news->delete();
     return redirect()->back()->with('success', 'Berita berhasil dihapus!');
+}
+
+public function removeAdditionalImage(News $news, $index)
+{
+    $images = json_decode($news->additional_images) ?? [];
+    if (isset($images[$index])) {
+        Storage::disk('public')->delete($images[$index]);
+        unset($images[$index]);
+        $news->additional_images = json_encode(array_values($images));
+        $news->save();
+    }
+
+    return back()->with('success', 'Gambar tambahan berhasil dihapus.');
 }
 
 public function ppdb()
@@ -135,7 +173,9 @@ public function storePrestasiAdmin(Request $request)
     $validated = $request->validate([
         'title' => 'required|string|max:255',
         'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        'content' => 'required|string'
+        'content' => 'required|string',
+        'writer_name' => 'required|string|max:255',
+        'published_date' => 'required|date'
     ]);
 
     $imagePath = $request->file('image')->store('prestasi', 'public');
@@ -143,7 +183,10 @@ public function storePrestasiAdmin(Request $request)
     Prestasi::create([
         'title' => $validated['title'],
         'image' => $imagePath,
-        'content' => $validated['content']
+        'content' => $validated['content'],
+        'writer_name' => $validated['writer_name'],
+        'day' => $request->day,
+        'created_at' => $request->published_date
     ]);
 
     return redirect()->back()->with('success', 'Prestasi berhasil ditambahkan!');
@@ -154,7 +197,10 @@ public function prestasiUpdate(Request $request, Prestasi $prestasi)
     $validated = $request->validate([
         'title' => 'required|string|max:255',
         'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        'content' => 'required|string'
+        'additional_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // tambahkan validasi
+        'content' => 'required|string',
+        'writer_name' => 'required|string|max:255',
+        'published_date' => 'required|date'
     ]);
 
     if ($request->hasFile('image')) {
@@ -163,16 +209,53 @@ public function prestasiUpdate(Request $request, Prestasi $prestasi)
         $prestasi->image = $imagePath;
     }
 
+    // Tambahkan penanganan additional_image
+    if ($request->hasFile('additional_image')) {
+        $additionalImagePath = $request->file('additional_image')->store('prestasi', 'public');
+        $currentImages = json_decode($prestasi->additional_images) ?? [];
+        $currentImages[] = $additionalImagePath;
+        $prestasi->additional_images = json_encode($currentImages);
+    }
+
     $prestasi->title = $validated['title'];
     $prestasi->content = $validated['content'];
+    $prestasi->writer_name = $validated['writer_name'];
+    $prestasi->day = $request->day;
+    $prestasi->created_at = $request->published_date;
     $prestasi->save();
 
     return redirect()->back()->with('success', 'Prestasi berhasil diperbarui!');
 }
 
+public function removeImage(Prestasi $prestasi, $index)
+{
+    $additionalImages = json_decode($prestasi->additional_images) ?? [];
+    
+    if (isset($additionalImages[$index])) {
+        Storage::disk('public')->delete($additionalImages[$index]);
+        array_splice($additionalImages, $index, 1);
+        $prestasi->additional_images = json_encode($additionalImages);
+        $prestasi->save();
+    }
+
+    return redirect()->back()->with('success', 'Gambar berhasil dihapus!');
+}
+
 public function prestasiDestroy(Prestasi $prestasi)
 {
-    Storage::disk('public')->delete($prestasi->image);
+    // Hapus gambar utama
+    if ($prestasi->image) {
+        Storage::disk('public')->delete($prestasi->image);
+    }
+    
+    // Hapus gambar tambahan
+    if ($prestasi->additional_images) {
+        $additionalImages = json_decode($prestasi->additional_images) ?? [];
+        foreach ($additionalImages as $image) {
+            Storage::disk('public')->delete($image);
+        }
+    }
+
     $prestasi->delete();
     return redirect()->back()->with('success', 'Prestasi berhasil dihapus!');
 }

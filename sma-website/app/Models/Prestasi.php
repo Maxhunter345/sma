@@ -6,16 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Prestasi extends Model
 {
+    protected $table = 'prestasi'; // Menentukan nama tabel yang benar
+    
     protected $fillable = [
         'title',
         'image',
-        'content'
+        'additional_images',
+        'content',
+        'writer_name',
+        'day'
     ];
-
-    protected $dates = [
-        'created_at',
-        'updated_at'
+    
+    protected $casts = [
+        'additional_images' => 'array'
     ];
-
-    protected $table = 'prestasi';
 }

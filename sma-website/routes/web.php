@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ElearningController;
@@ -8,7 +9,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PpdbController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Middleware\AdminMiddleware;
-
+use App\Http\Controllers\NewsController;
 
 // Home Route
 Route::get('/', function () {
@@ -57,11 +58,14 @@ Route::prefix('admin')->middleware(['auth', AdminMiddleware::class])->group(func
     Route::post('/e-news', [AdminController::class, 'storeNews'])->name('admin.enews.store');
     Route::put('/e-news/{news}', [AdminController::class, 'newsUpdate'])->name('admin.enews.update');
     Route::delete('/e-news/{news}', [AdminController::class, 'newsDestroy'])->name('admin.enews.destroy');
+    Route::delete('/e-news/{news}/image/{index}', [AdminController::class, 'removeAdditionalImage'])->name('admin.enews.remove-image');
     
     Route::get('/prestasi', [AdminController::class, 'prestasi'])->name('admin.prestasi');
     Route::post('/prestasi', [AdminController::class, 'storePrestasiAdmin'])->name('admin.prestasi.store');
     Route::put('/prestasi/{prestasi}', [AdminController::class, 'prestasiUpdate'])->name('admin.prestasi.update');
-    Route::delete('/prestasi/{prestasi}', [AdminController::class, 'prestasiDestroy'])->name('admin.prestasi.destroy');
+    Route::delete('/prestasi/{prestasi}', [AdminController::class, 'prestasiDestroy'])->name('admin.prestasi.destroy'); // Menambahkan route destroy
+    Route::delete('/prestasi/{prestasi}/image/{index}', [AdminController::class, 'removeImage'])
+        ->name('admin.prestasi.remove-image');
     
     Route::get('/ppdb', [PpdbController::class, 'adminIndex'])->name('admin.ppdb');
     Route::post('/ppdb/store', [PpdbController::class, 'store'])->name('admin.ppdb.store');
@@ -82,11 +86,15 @@ Route::get('/prestasi', function () {
     $prestasis = \App\Models\Prestasi::orderBy('created_at', 'desc')->get();
     return view('prestasi', compact('prestasis'));
 });
+Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
+Route::get('/prestasi/{prestasi}', [PrestasiController::class, 'show'])->name('prestasi.show');
 
 Route::get('/e-news', function () {
     $news = \App\Models\News::orderBy('created_at', 'desc')->get();
     return view('enews', compact('news'));
 });
+Route::get('/e-news', [NewsController::class, 'index'])->name('enews.index');
+Route::get('/e-news/{news}', [NewsController::class, 'show'])->name('enews.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/e-library', [LibraryController::class, 'index'])->name('library.elibrary');

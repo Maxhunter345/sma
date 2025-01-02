@@ -20,24 +20,33 @@ class PrestasiController extends Controller
        return view('admin.prestasiadmin', compact('prestasis'));
    }
 
-   public function prestasiStore(Request $request) 
-   {
-       $validated = $request->validate([
-           'title' => 'required|string|max:255',
-           'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-           'content' => 'required|string'
-       ]);
+   public function storePrestasiAdmin(Request $request)
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        'content' => 'required|string',
+        'writer_name' => 'required|string|max:255',
+        'day' => 'required|string'
+    ]);
 
-       $imagePath = $request->file('image')->store('prestasi', 'public');
+    $images = [];
+    if($request->hasFile('images')) {
+        foreach($request->file('images') as $image) {
+            $images[] = $image->store('prestasi', 'public');
+        }
+    }
 
-       Prestasi::create([
-           'title' => $validated['title'],
-           'image' => $imagePath,
-           'content' => $validated['content']
-       ]);
+    Prestasi::create([
+        'title' => $validated['title'],
+        'images' => json_encode($images), // Encode array menjadi JSON string
+        'content' => $validated['content'],
+        'writer_name' => $validated['writer_name'],
+        'day' => $validated['day']
+    ]);
 
-       return redirect()->back()->with('success', 'Prestasi berhasil ditambahkan!');
-   }
+    return redirect()->back()->with('success', 'Prestasi berhasil ditambahkan!');
+}
 
    public function prestasiUpdate(Request $request, Prestasi $prestasi)
    {
@@ -65,5 +74,9 @@ class PrestasiController extends Controller
        Storage::disk('public')->delete($prestasi->image);
        $prestasi->delete();
        return redirect()->back()->with('success', 'Prestasi berhasil dihapus!');
+   }
+   public function show(Prestasi $prestasi)
+   {
+       return view('prestasi.show', compact('prestasi'));
    }
 }

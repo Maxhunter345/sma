@@ -9,8 +9,10 @@ class News extends Model
     protected $fillable = [
         'title',
         'image',
-        'content'
-    ];
+        'content',
+        'writer_name',
+        'published_date'
+    ];    
 
     protected $dates = [
         'created_at',

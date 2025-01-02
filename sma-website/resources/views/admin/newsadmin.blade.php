@@ -43,7 +43,8 @@
                         <tr>
                             <th>Thumbnail</th>
                             <th>Judul</th>
-                            <th>Tanggal</th>
+                            <th>Penulis</th>
+                            <th>Tanggal Publikasi</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -54,6 +55,8 @@
                                 <img src="{{ asset('storage/' . $item->image) }}" class="news-thumbnail" alt="{{ $item->title }}">
                             </td>
                             <td>{{ $item->title }}</td>
+                            <td>{{ $item->writer_name }}</td>
+                            <td>{{ $item->published_date }}</td>
                             <td>{{ $item->created_at->format('d F Y') }}</td>
                             <td>
                                 <button class="btn btn-sm btn-info me-2" data-bs-toggle="modal" data-bs-target="#editNewsModal{{ $item->id }}">
@@ -92,8 +95,21 @@
                         <input type="text" class="form-control" name="title" required>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label">Penulis</label>
+                        <input type="text" class="form-control" name="writer_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal Publikasi</label>
+                        <input type="date" class="form-control" name="published_date" required>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Gambar</label>
                         <input type="file" class="form-control" name="image" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Gambar Tambahan</label>
+                        <input type="file" class="form-control" name="additional_images[]" multiple>
+                        <small class="text-muted">Upload beberapa gambar tambahan (opsional)</small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Konten</label>
@@ -127,10 +143,40 @@
                         <input type="text" class="form-control" name="title" value="{{ $item->title }}" required>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label">Penulis</label>
+                        <input type="text" class="form-control" name="writer_name" value="{{ $item->writer_name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal Publikasi</label>
+                        <input type="date" class="form-control" name="published_date" value="{{ $item->published_date }}" required>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Gambar</label>
                         <input type="file" class="form-control" name="image">
                         <small class="text-muted">Biarkan kosong jika tidak ingin mengubah gambar</small>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">Gambar Tambahan</label>
+                        <input type="file" class="form-control" name="additional_images[]" multiple>
+                        <small class="text-muted">Upload beberapa gambar tambahan (opsional)</small>
+                            @if($item->additional_images)
+                                <div class="existing-images mt-2">
+                                    @php $additionalImages = json_decode($item->additional_images) ?? []; @endphp
+                                @foreach($additionalImages as $index => $image)
+                                    <div class="position-relative d-inline-block">
+                                        <img src="{{ asset('storage/' . $image) }}" class="news-thumbnail">
+                                        <form action="{{ route('admin.enews.remove-image', ['news' => $item->id, 'index' => $index]) }}" method="POST" class="position-absolute" style="top: 0; right: 0;">
+                                    @csrf
+                                @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Hapus gambar ini?')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </form>
+            </div>
+            @endforeach
+        </div>
+        @endif
+    </div>
                     <div class="mb-3">
                         <label class="form-label">Konten</label>
                         <textarea class="form-control" name="content" rows="5" required>{{ $item->content }}</textarea>

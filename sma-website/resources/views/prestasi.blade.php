@@ -35,11 +35,6 @@
     color: #666;
     font-size: 0.9rem;
 }
-
-.modal-image {
-    max-width: 100%;
-    height: auto;
-}
 </style>
 @endsection
 
@@ -58,31 +53,9 @@
                         <i class="fas fa-calendar-alt me-2"></i>
                         {{ $prestasi->created_at->format('d F Y') }}
                     </p>
-                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#prestasiModal{{ $prestasi->id }}">
+                    <a href="{{ route('prestasi.show', $prestasi->id) }}" class="btn btn-primary w-100">
                         Selengkapnya
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal untuk setiap prestasi -->
-        <div class="modal fade" id="prestasiModal{{ $prestasi->id }}" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{ $prestasi->title }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <img src="{{ asset('storage/' . $prestasi->image) }}" class="modal-image mb-3" alt="{{ $prestasi->title }}">
-                        <p class="prestasi-date mb-3">
-                            <i class="fas fa-calendar-alt me-2"></i>
-                            {{ $prestasi->created_at->format('d F Y') }}
-                        </p>
-                        <div class="prestasi-content">
-                            {!! $prestasi->content !!}
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>

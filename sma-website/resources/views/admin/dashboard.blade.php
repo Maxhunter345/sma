@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <div class="hero-section">
@@ -12,17 +12,17 @@
 
 <div class="container py-5">
     <div class="row justify-content-center g-4">
-        <!-- E-Learning Management -->
+        <!-- Guru Management -->
         <div class="col-md-4">
             <div class="admin-card">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body text-center p-4">
                         <div class="mb-4">
-                            <i class="fas fa-laptop-code icon-large text-primary"></i>
+                            <i class="fas fa-chalkboard-teacher icon-large text-primary"></i>
                         </div>
-                        <h4 class="card-title mb-3">E-Learning</h4>
-                        <p class="card-text mb-4">Manage courses, materials, and student access for online learning.</p>
-                        <a href="/admin/e-learning" class="btn btn-primary w-100">Manage E-Learning</a>
+                        <h4 class="card-title mb-3">Guru</h4>
+                        <p class="card-text mb-4">Manage Lessons, Teachers Info.</p>
+                        <a href="{{ route('admin.guru.index') }}" class="btn btn-primary w-100">Manage Guru</a>
                     </div>
                 </div>
             </div>
@@ -100,6 +100,7 @@
 }
 
 .admin-card {
+    height: 100%;
     transition: transform 0.3s ease;
 }
 
@@ -111,6 +112,12 @@
     border: none;
     border-radius: 15px;
     background: white;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensure button stays at the bottom */
 }
 
 .btn-primary {
