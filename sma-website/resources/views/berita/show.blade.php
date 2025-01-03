@@ -46,7 +46,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <h1 class="news-title mb-4">{{ $news->title }}</h1>
-            
+
             <div class="d-flex justify-content-center align-items-center mb-4">
                 <div class="news-meta me-3">
                     <i class="fas fa-user me-2"></i>{{ $news->writer_name }}
@@ -58,7 +58,7 @@
 
             <!-- Gambar Utama -->
             @if($news->image)
-                <img src="{{ asset('storage/' . $news->image) }}" class="news-main-image" alt="{{ $news->title }}">
+                <img src="{{ asset('storage/app/public/' . $news->image) }}" class="news-main-image" alt="{{ $news->title }}">
             @endif
 
             <!-- Konten -->
@@ -73,7 +73,7 @@
                         @php $additionalImages = json_decode($news->additional_images) @endphp
                         @foreach($additionalImages as $image)
                         <div>
-                            <img src="{{ asset('storage/' . $image) }}" class="img-fluid" alt="Additional Image">
+                            <img src="{{ asset('storage/app/public/' . $image) }}" class="img-fluid" alt="Additional Image">
                         </div>
                         @endforeach
                     </div>

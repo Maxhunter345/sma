@@ -44,11 +44,11 @@
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <h1 class="prestasi-title mb-4">{{ $prestasi->title }}</h1>
-            
+
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="prestasi-meta">
                     <i class="fas fa-calendar-alt me-2"></i>
-                    {{ $prestasi->created_at->format('d F Y') }} 
+                    {{ $prestasi->created_at->format('d F Y') }}
                     {{ $prestasi->day }}
                 </div>
                 <div class="prestasi-meta">
@@ -59,7 +59,7 @@
 
             <!-- Gambar Utama -->
             @if($prestasi->image)
-                <img src="{{ asset('storage/' . $prestasi->image) }}" class="prestasi-main-image" alt="{{ $prestasi->title }}">
+                <img src="{{ asset('storage/app/public/' . $prestasi->image) }}" class="prestasi-main-image" alt="{{ $prestasi->title }}">
             @endif
 
             <!-- Konten -->
@@ -73,7 +73,7 @@
                     <div class="row">
             @foreach(json_decode($prestasi->additional_images) as $image)
                 <div>
-                    <img src="{{ asset('storage/' . $image) }}" class="img-fluid" alt="Additional Image">
+                    <img src="{{ asset('storage/app/public/' . $image) }}" class="img-fluid" alt="Additional Image">
                 </div>
             @endforeach
         </div>

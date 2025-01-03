@@ -41,12 +41,12 @@
 @section('content')
 <div class="container py-5">
     <h2 class="text-center mb-4">Prestasi SMAN 6 Tangerang</h2>
-    
+
     <div class="row g-4">
         @foreach($prestasis as $prestasi)
         <div class="col-md-4">
             <div class="prestasi-card card">
-                <img src="{{ asset('storage/' . $prestasi->image) }}" class="prestasi-image" alt="{{ $prestasi->title }}">
+                <img src="{{ asset('storage/app/public/' . $prestasi->image) }}" class="prestasi-image" alt="{{ $prestasi->title }}">
                 <div class="card-body">
                     <h5 class="prestasi-title mb-2">{{ $prestasi->title }}</h5>
                     <p class="prestasi-date mb-2">

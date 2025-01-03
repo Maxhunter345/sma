@@ -11,10 +11,9 @@
 }
 
 .news-thumbnail {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
+        max-width: 150px;
+        max-height: 100px;
+        object-fit: cover;
 }
 </style>
 @endsection
@@ -52,7 +51,7 @@
                         @foreach($news as $item)
                         <tr>
                             <td>
-                                <img src="{{ asset('storage/' . $item->image) }}" class="news-thumbnail" alt="{{ $item->title }}">
+                                <img src="{{ asset('storage/app/public/' . $item->image) }}" class="news-thumbnail" alt="{{ $item->title }}" style="max-width: 150px; max-height: 100px; object-fit: cover;">
                             </td>
                             <td>{{ $item->title }}</td>
                             <td>{{ $item->writer_name }}</td>
@@ -164,7 +163,7 @@
                                     @php $additionalImages = json_decode($item->additional_images) ?? []; @endphp
                                 @foreach($additionalImages as $index => $image)
                                     <div class="position-relative d-inline-block">
-                                        <img src="{{ asset('storage/' . $image) }}" class="news-thumbnail">
+                                        <img src="{{ asset('storage/app/public/' . $image) }}" class="news-thumbnail">
                                         <form action="{{ route('admin.enews.remove-image', ['news' => $item->id, 'index' => $index]) }}" method="POST" class="position-absolute" style="top: 0; right: 0;">
                                     @csrf
                                 @method('DELETE')

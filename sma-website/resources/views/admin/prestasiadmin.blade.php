@@ -73,7 +73,7 @@
                         <tr>
                             <td>
                                 @if($prestasi->image)
-                                    <img src="{{ asset('storage/' . $prestasi->image) }}" class="prestasi-thumbnail" alt="{{ $prestasi->title }}">
+                                    <img src="{{ asset('storage/app/public/' . $prestasi->image) }}" class="prestasi-thumbnail" alt="{{ $prestasi->title }}" style="max-width: 150px; max-height: 100px; object-fit: cover;">
                                 @endif
                             </td>
                             <td>{{ $prestasi->title }}</td>
@@ -166,7 +166,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Tanggal</label>
-                        <input type="date" class="form-control" name="published_date" 
+                        <input type="date" class="form-control" name="published_date"
                                value="{{ $prestasi->created_at->format('Y-m-d') }}" required>
                     </div>
                     <div class="mb-3">
@@ -175,7 +175,7 @@
                         <small class="text-muted">Biarkan kosong jika tidak ingin mengubah gambar</small>
                         @if($prestasi->image)
                             <div class="mt-2">
-                                <img src="{{ asset('storage/' . $prestasi->image) }}" alt="Current Image" style="max-width: 200px;">
+                                <img src="{{ asset('storage/app/public/' . $prestasi->image) }}" alt="Current Image" style="max-width: 200px;">
                             </div>
                         @endif
                     </div>
@@ -189,7 +189,7 @@
                                 @foreach($additionalImages as $index => $image)
                                     <div class="position-relative d-inline-block">
                                         <img src="{{ asset('storage/' . $image) }}" alt="Additional image">
-                                        <form action="{{ route('admin.prestasi.remove-image', ['prestasi' => $prestasi->id, 'index' => $index]) }}" 
+                                        <form action="{{ route('admin.prestasi.remove-image', ['prestasi' => $prestasi->id, 'index' => $index]) }}"
                                               method="POST" class="position-absolute" style="top: 0; right: 0;">
                                             @csrf
                                             @method('DELETE')
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
         createDateInput.addEventListener('change', function() {
             const selectedDate = new Date(this.value);
             const dayName = getDayName(selectedDate);
-            
+
             // Membuat hidden input untuk hari
             let hiddenDayInput = document.querySelector('#createPrestasiModal input[name="day"]');
             if (!hiddenDayInput) {
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
             dateInput.addEventListener('change', function() {
                 const selectedDate = new Date(this.value);
                 const dayName = getDayName(selectedDate);
-                
+
                 // Membuat hidden input untuk hari
                 let hiddenDayInput = modal.querySelector('input[name="day"]');
                 if (!hiddenDayInput) {
@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('input[name="image"]').addEventListener('change', function(e) {
         const preview = document.getElementById('mainImagePreview');
         preview.innerHTML = '';
-        
+
         const reader = new FileReader();
         reader.onload = function(e) {
             const img = document.createElement('img');
